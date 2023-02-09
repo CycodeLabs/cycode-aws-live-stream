@@ -1,0 +1,10 @@
+FROM maven:3.5-jdk-11 AS build
+COPY marshalsec /usr/src/app
+WORKDIR /usr/src/app
+RUN mvn clean package -DskipTests
+
+FROM openjdk:11-jdk
+COPY --from=build /usr/src/app/target /usr/app/  
+
+WORKDIR /usr/app
+ENTRYPOINT ["java", "-cp", "marshalsec-0.0.3-SNAPSHOT-all.jar", "marshalsec.jndi.LDAPRefServer"]

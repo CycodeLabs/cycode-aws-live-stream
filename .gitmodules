@@ -1,0 +1,3 @@
+[submodule "stream3-24-01-2023/marshalsec"]
+	path = stream3-24-01-2023/marshalsec
+	url = https://github.com/mbechler/marshalsec.git

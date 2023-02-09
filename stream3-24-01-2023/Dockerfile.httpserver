@@ -1,0 +1,33 @@
+# FROM maven:3.5-jdk-11 AS build
+
+# COPY exploit /usr/src/app
+# WORKDIR /usr/src/app
+
+# RUN mvn clean compile
+
+# FROM python:3.8
+
+# RUN pip install httpserver
+
+# COPY --from=build /usr/src/app/target/classes/Exploit.class /server/
+# WORKDIR /server
+
+# ENTRYPOINT ["python", "-m", "http.server"]
+
+
+FROM maven:3.5-jdk-11 AS build
+
+COPY exploit /usr/src/app
+WORKDIR /usr/src/app
+
+RUN mvn clean compile
+
+FROM python:3.8
+
+RUN pip install httpserver
+
+COPY --from=build /usr/src/app/target/classes/Exploit.class /server/
+COPY http /server
+WORKDIR /server
+
+ENTRYPOINT ["python", "main.py"]

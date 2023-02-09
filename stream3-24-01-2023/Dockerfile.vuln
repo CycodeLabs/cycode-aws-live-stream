@@ -1,0 +1,11 @@
+FROM maven:3.5-jdk-11 AS build
+COPY vuln /usr/src/app
+WORKDIR /usr/src/app
+RUN mvn clean package
+
+FROM openjdk:8u121-jdk
+COPY --from=build /usr/src/app/target /usr/app/  
+
+WORKDIR /usr/app
+
+CMD ["java", "-cp", "log4j-rce-1.0-SNAPSHOT-all.jar", "log4j"]
